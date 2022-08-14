@@ -246,6 +246,10 @@ class Bg {
         promise = this.client.torrentSetLocation(message.ids, message.location);
         break;
       }
+      case 'putTorrent': {
+        promise = this.client.putTorrent({url: message.url});
+        break;
+      }
       default: {
         promise = Promise.reject(new Error('Unknown request'));
       }

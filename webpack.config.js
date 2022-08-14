@@ -19,6 +19,7 @@ const config = {
     index: './src/pages/Index',
     options: './src/pages/Options',
     tabUrlFetch: './src/tabUrlFetch',
+    content: './src/bg/content'
   },
   output: {
     filename: '[name].js',

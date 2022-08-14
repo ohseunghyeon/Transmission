@@ -16,12 +16,29 @@
             "bg.js"
         ]
     },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
     "icons": {
         "16": "assets/icons/icon_16.png",
         "48": "assets/icons/icon_48.png",
         "128": "assets/icons/icon_128.png"
     },
-    "permissions": [ "http://*/*", "https://*/*", "storage", "notifications", "contextMenus" ],
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "storage",
+        "notifications",
+        "contextMenus"
+    ],
     "name": "__MSG_appName__",
     "description": "__MSG_appDesc__",
     "default_locale": "en",

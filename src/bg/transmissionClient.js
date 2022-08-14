@@ -1,4 +1,4 @@
-import {fetch as fetchPolyfill, Headers as HeadersPolyfill} from "whatwg-fetch";
+import { fetch as fetchPolyfill, Headers as HeadersPolyfill } from "whatwg-fetch";
 import getLogger from "../tools/getLogger";
 import ErrorWithCode from "../tools/errorWithCode";
 import readBlobAsArrayBuffer from "../tools/readBlobAsArrayBuffer";
@@ -70,13 +70,13 @@ class TransmissionClient {
       const previousActiveTorrentIds = this.bgStore.client.activeTorrentIds;
 
       if (isRecently) {
-        const {removed, torrents} = response.arguments;
+        const { removed, torrents } = response.arguments;
 
         this.bgStore.client.removeTorrentByIds(removed);
 
         this.bgStore.client.syncChanges(torrents.map(this.normalizeTorrent));
       } else {
-        const {torrents} = response.arguments;
+        const { torrents } = response.arguments;
 
         this.bgStore.client.sync(torrents.map(this.normalizeTorrent));
       }
@@ -92,7 +92,7 @@ class TransmissionClient {
         });
       }
 
-      const {downloadSpeed, uploadSpeed} = this.bgStore.client.currentSpeed;
+      const { downloadSpeed, uploadSpeed } = this.bgStore.client.currentSpeed;
       this.bgStore.client.speedRoll.add(downloadSpeed, uploadSpeed);
 
       return response;
@@ -143,7 +143,7 @@ class TransmissionClient {
   };
 
   updateSettings() {
-    return this.sendAction({method: 'session-get'}).then((response) => {
+    return this.sendAction({ method: 'session-get' }).then((response) => {
       this.bgStore.client.setSettings(this.normalizeSettings(response.arguments));
     });
   }
@@ -151,7 +151,7 @@ class TransmissionClient {
   getFreeSpace(path) {
     return this.sendAction({
       method: "free-space",
-      arguments: {path}
+      arguments: { path }
     }).then((response) => {
       return {
         path: response.arguments.path,
@@ -200,7 +200,7 @@ class TransmissionClient {
     });
   }
 
-  sendFile({blob, url}, directory) {
+  sendFile({ blob, url }, directory) {
     return Promise.resolve().then(() => {
       if (url) {
         return this.sendAction(putDirectory({
@@ -236,9 +236,10 @@ class TransmissionClient {
     }
   }
 
-  putTorrent({blob, url}, directory) {
-    return this.sendFile({blob, url}, directory).then((response) => {
-      const {'torrent-added': torrentAdded, 'torrent-duplicate': torrentDuplicate} = response.arguments;
+  putTorrent({ blob, url }, directory) {
+    console.log(blob, url, directory)
+    return this.sendFile({ blob, url }, directory).then((response) => {
+      const { 'torrent-added': torrentAdded, 'torrent-duplicate': torrentDuplicate } = response.arguments;
       if (torrentAdded) {
         this.bg.torrentAddedNotify(torrentAdded);
       }
@@ -314,7 +315,7 @@ class TransmissionClient {
   rename(ids, path, name) {
     return this.sendAction({
       method: 'torrent-rename-path',
-      arguments: {ids, path, name}
+      arguments: { ids, path, name }
     }).then(this.thenUpdateTorrents);
   }
 
@@ -332,35 +333,35 @@ class TransmissionClient {
   reannounce(ids) {
     return this.sendAction({
       method: 'torrent-reannounce',
-      arguments: {ids}
+      arguments: { ids }
     });
   }
 
   queueTop(ids) {
     return this.sendAction({
       method: 'queue-move-top',
-      arguments: {ids}
+      arguments: { ids }
     }).then(this.thenUpdateTorrents);
   }
 
   queueUp(ids) {
     return this.sendAction({
       method: 'queue-move-up',
-      arguments: {ids}
+      arguments: { ids }
     }).then(this.thenUpdateTorrents);
   }
 
   queueDown(ids) {
     return this.sendAction({
       method: 'queue-move-down',
-      arguments: {ids}
+      arguments: { ids }
     }).then(this.thenUpdateTorrents);
   }
 
   queueBottom(ids) {
     return this.sendAction({
       method: 'queue-move-bottom',
-      arguments: {ids}
+      arguments: { ids }
     }).then(this.thenUpdateTorrents);
   }
 
@@ -478,14 +479,15 @@ class TransmissionClient {
         if (err.code !== 'LINK_IS_NOT_SUPPORTED') {
           logger.error('sendFiles: downloadFileFromUrl error, fallback to url', err);
         }
-        return {url};
+        return { url };
       }).then((data) => {
+        console.log('여기 오나?')
         return this.putTorrent(data, directory);
       }).then(() => {
-        return {result: true};
+        return { result: true };
       }, (err) => {
         logger.error('sendFile error', url, err);
-        return {error: err};
+        return { error: err };
       });
     })).then(this.thenUpdateTorrents);
   }
@@ -583,7 +585,7 @@ class TransmissionClient {
       const downloaded = file.bytesCompleted;
       const priority = !state.wanted ? 0 : state.priority + 2;
 
-      return {name, shortName, size, downloaded, priority};
+      return { name, shortName, size, downloaded, priority };
     });
   };
 
