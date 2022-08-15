@@ -254,7 +254,6 @@ class Bg {
         promise = Promise.reject(new Error('Unknown request'));
       }
     }
-
     if (promise) {
       promise.then((result) => {
         response({result});

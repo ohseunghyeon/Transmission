@@ -481,7 +481,6 @@ class TransmissionClient {
         }
         return { url };
       }).then((data) => {
-        console.log('여기 오나?')
         return this.putTorrent(data, directory);
       }).then(() => {
         return { result: true };

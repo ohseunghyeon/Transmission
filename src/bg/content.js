@@ -16,6 +16,12 @@ document.addEventListener("click", (e) => {
         },
         function (response) {
           console.log("Response: ", response);
+          chrome.runtime.sendMessage(
+            { action: 'updateTorrentList' },
+            function (response) {
+              console.log("Response: ", response);
+            }
+          )
         });
       e.preventDefault();
     }
